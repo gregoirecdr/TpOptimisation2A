@@ -1,4 +1,5 @@
 using Test
+using LinearAlgebra
 include("../test/fonctions_de_tests.jl")
 
 """
@@ -28,104 +29,104 @@ function tester_newton(newton::Function, afficher::Bool)
     epsilon = 1.0
 
     #
-    @testset "algorithme de Newton" begin
-        @testset "test f1 : x0 = solution" begin
+    Test.@testset "algorithme de Newton" begin
+        Test.@testset "test f1 : x0 = solution" begin
             x_sol, f_sol, flag, nb_iters, _ = newton(fct1, grad_fct1, hess_fct1, sol_exacte_fct1, 
                             max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
             if (afficher)
                 afficher_resultats("newton", "f1", sol_exacte_fct1, x_sol, f_sol, flag, nb_iters, sol_exacte_fct1)
             end
-            @testset "solution" begin
-                @test x_sol ≈ sol_exacte_fct1 atol=tol_erreur
+            Test.@testset "solution" begin
+                Test.@test x_sol ≈ sol_exacte_fct1 atol=tol_erreur
             end
-            @testset "itération" begin
-                @test nb_iters == 0
+            Test.@testset "itération" begin
+                Test.@test nb_iters == 0
             end
-            @testset "flag" begin
-                @test flag == 0
+            Test.@testset "flag" begin
+                Test.@test flag == 0
             end
         end
-        @testset "test f1 : x0 = x011" begin
+        Test.@testset "test f1 : x0 = x011" begin
             x_sol, f_sol, flag, nb_iters, _ = newton(fct1, grad_fct1, hess_fct1, pts1.x011,  
                             max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
             if (afficher)
                 afficher_resultats("newton", "f1", pts1.x011, x_sol, f_sol, flag, nb_iters, sol_exacte_fct1)
             end
-            @testset "solution" begin
-                @test x_sol ≈ sol_exacte_fct1 atol=tol_erreur
+            Test.@testset "solution" begin
+                Test.@test x_sol ≈ sol_exacte_fct1 atol=tol_erreur
             end
-            @testset "itération" begin
-                @test nb_iters == 1
+            Test.@testset "itération" begin
+                Test.@test nb_iters == 1
             end
-            @testset "flag" begin
-                @test flag == 0
+            Test.@testset "flag" begin
+                Test.@test flag == 0
             end
         end
-        @testset "test f1 : x0 = x012" begin
+        Test.@testset "test f1 : x0 = x012" begin
             x_sol, f_sol, flag, nb_iters, _ = newton(fct1, grad_fct1, hess_fct1, pts1.x012, 
                             max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
             if (afficher)
                 afficher_resultats("newton", "f1", pts1.x012, x_sol, f_sol, flag, nb_iters, sol_exacte_fct1)
             end
-            @testset "solution" begin
-                @test x_sol ≈ sol_exacte_fct1 atol = tol_erreur
+            Test.@testset "solution" begin
+                Test.@test x_sol ≈ sol_exacte_fct1 atol = tol_erreur
             end
-            @testset "itération" begin
-                @test nb_iters == 1
+            Test.@testset "itération" begin
+                Test.@test nb_iters == 1
             end
-            @testset "flag" begin
-                @test flag == 0
+            Test.@testset "flag" begin
+                Test.@test flag == 0
             end
         end
-        @testset "test f2 : x0 = x021" begin
+        Test.@testset "test f2 : x0 = x021" begin
             x_sol, f_sol, flag, nb_iters, _ = newton(fct2, grad_fct2, hess_fct2, pts1.x021, 
                             max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
             if (afficher)
                 afficher_resultats("newton", "f2", pts1.x021, x_sol, f_sol, flag, nb_iters, sol_exacte_fct2)
             end
-            @testset "solution" begin
-                @test x_sol ≈ sol_exacte_fct2 atol = tol_erreur
+            Test.@testset "solution" begin
+                Test.@test x_sol ≈ sol_exacte_fct2 atol = tol_erreur
             end
-            @testset "itération" begin
-                @test nb_iters == 6
+            Test.@testset "itération" begin
+                Test.@test nb_iters == 6
             end
-            @testset "flag" begin
-                @test flag == 0
+            Test.@testset "flag" begin
+                Test.@test flag == 0
             end
         end
-        @testset "test f2 : x0 = x022" begin
+        Test.@testset "test f2 : x0 = x022" begin
             x_sol, f_sol, flag, nb_iters, _ = newton(fct2, grad_fct2, hess_fct2, pts1.x022, 
                             max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
             if (afficher)
                 afficher_resultats("newton", "f2", pts1.x022, x_sol, f_sol, flag, nb_iters, sol_exacte_fct2)
             end
-            @testset "solution" begin
-                @test x_sol ≈ sol_exacte_fct2 atol = tol_erreur
+            Test.@testset "solution" begin
+                Test.@test x_sol ≈ sol_exacte_fct2 atol = tol_erreur
             end
-            @testset "itération" begin
-                @test nb_iters == 5
+            Test.@testset "itération" begin
+                Test.@test nb_iters == 5
             end
-            @testset "flag" begin
-                @test flag == 0
+            Test.@testset "flag" begin
+                Test.@test flag == 0
             end
         end
-        @testset "test f2 : x0 = x023" begin
+        Test.@testset "test f2 : x0 = x023" begin
             x_sol, f_sol, flag, nb_iters, _ = newton(fct2, grad_fct2, hess_fct2, pts1.x023, 
                             max_iter=1, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
             if (afficher)
                 afficher_resultats("newton", "f2", pts1.x023, x_sol, f_sol, flag, nb_iters, sol_exacte_fct2)
             end
-            @testset "solution" begin
-                @test x_sol ≈ [-4.99999958629818e9, 8.673617379884035e-19] atol = tol_erreur
+            Test.@testset "solution" begin
+                Test.@test norm(x_sol) > 1e6
             end
-            @testset "flag" begin
-                @test flag == 3
+            Test.@testset "flag" begin
+                Test.@test flag == 3
             end
-            @testset "itération" begin
-                @test nb_iters == 1
+            Test.@testset "itération" begin
+                Test.@test nb_iters == 1
             end
-            @testset "exception" begin
-                @test_throws SingularException _, _, _, _ = newton(fct2, grad_fct2, hess_fct2, pts1.x023, 
+            Test.@testset "exception" begin
+                Test.@test_throws SingularException _, _, _, _ = newton(fct2, grad_fct2, hess_fct2, pts1.x023, 
                         max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
             end
         end

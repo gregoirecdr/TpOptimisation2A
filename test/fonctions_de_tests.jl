@@ -18,7 +18,7 @@ x011 = [1; 0; 0]
 x012 = [10; 3; -2.2]
 x021 = [-1.2; 1]
 x022 = [10; 0]
-x023 = [0; 1/200 + 1/10^12]
+x023 = [0; 1/200 + 1/10^18]
 # les points initiaux utilisés dans les problèmes sans contraintes
 pts1 = Pts_sans_contraintes(x011,x012,x021,x022,x023)
 

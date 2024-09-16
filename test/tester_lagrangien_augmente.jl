@@ -42,9 +42,9 @@ function tester_lagrangien_augmente(LA::Function, afficher::Bool)
 	x03 = pts2.x03
 	x04 = pts2.x04
 
-	@testset "Lagrangien augmenté  " begin 	
+	Test.@testset "Lagrangien augmenté  " begin 	
 
-		@testset "Avec $algo" for algo in algos
+		Test.@testset "Avec $algo" for algo in algos
 
 			# le cas de test 1
 			x0 = x01
@@ -52,7 +52,7 @@ function tester_lagrangien_augmente(LA::Function, afficher::Bool)
 			if (afficher)
 				afficher_resultats("LA et " * algo, "f1", x0, x_sol, f_sol, flag, nb_iters, sol_fct1_augm)
 			end
-			@test x_sol ≈ sol_fct1_augm atol=tol_erreur
+			Test.@test x_sol ≈ sol_fct1_augm atol=tol_erreur
 
 			# le cas de test 2
 			x0 = x02
@@ -60,7 +60,7 @@ function tester_lagrangien_augmente(LA::Function, afficher::Bool)
 			if (afficher)
 				afficher_resultats("LA et " * algo, "f1", x0, x_sol, f_sol, flag, nb_iters, sol_fct1_augm)
 			end
-			@test x_sol ≈ sol_fct1_augm atol=tol_erreur
+			Test.@test x_sol ≈ sol_fct1_augm atol=tol_erreur
 
 			# le cas de test 3
 			x0 = x03
@@ -68,7 +68,7 @@ function tester_lagrangien_augmente(LA::Function, afficher::Bool)
 			if (afficher)
 				afficher_resultats("LA et " * algo, "f2", x0, x_sol, f_sol, flag, nb_iters, sol_fct2_augm)
 			end
-			@test x_sol ≈ sol_fct2_augm atol=tol_erreur
+			Test.@test x_sol ≈ sol_fct2_augm atol=tol_erreur
 
 			# le cas de test 4
 			x0 = x04
@@ -76,7 +76,7 @@ function tester_lagrangien_augmente(LA::Function, afficher::Bool)
 			if (afficher)
 				afficher_resultats("LA et " * algo, "f2", x0, x_sol, f_sol, flag, nb_iters, sol_fct2_augm)
 			end
-			@test x_sol ≈ sol_fct2_augm atol=tol_erreur
+			Test.@test x_sol ≈ sol_fct2_augm atol=tol_erreur
 
 		end
 
