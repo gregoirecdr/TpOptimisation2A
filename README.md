@@ -15,6 +15,10 @@ Les sujets liés au projet se trouvent dans les notebooks du répertoire `notebo
 
 Pour réaliser le projet vous aurez besoin de cette [documentation]([doc-projet.pdf](https://gitlab.irit.fr/toc/etu-n7/projet-optinum/-/raw/master/doc-projet.pdf)) qui décrit les différents algorithmes à implémenter.
 
+## Documentation
+
+Voir [doc-projet.pdf](https://gitlab.irit.fr/toc/etu-n7/projet-optinum/-/raw/master/doc-projet.pdf?ref_type=heads).
+
 ## Installation de Julia
 
 Si vous n'avez pas encore installer Julia sur votre compte N7 ou sur votre machine personnelle, suivez les instructions :
