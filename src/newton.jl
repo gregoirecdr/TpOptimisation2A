@@ -36,7 +36,7 @@ Approximation d'une solution du problème min f(x), x ∈ Rⁿ, en utilisant l'a
    gradf(x)=[-400*x[1]*(x[2]-x[1]^2)-2*(1-x[1]) ; 200*(x[2]-x[1]^2)]
    hessf(x)=[-400*(x[2]-3*x[1]^2)+2  -400*x[1];-400*x[1]  200]
    x0 = [1; 0]
-   x_sol, f_sol, flag, nb_iters, xs = newton(f, gradf, hessf, x0)
+   x_sol, f_sol, flag, nb_iters, xs = newton(f, gradf, hessf, x0, max_iter=10)
 
 """
 function newton(f::Function, gradf::Function, hessf::Function, x0::Union{Real,Vector{<:Real}}; 
