@@ -24,6 +24,10 @@ Voir [doc-projet.pdf](https://gitlab.irit.fr/toc/etu-n7/projet-optinum/-/raw/mas
 Si vous n'avez pas encore installer Julia sur votre compte N7 ou sur votre machine personnelle, suivez les instructions :
 [Utilisation de Julia à l'N7](https://gitlab.irit.fr/toc/etu-n7/documentation/-/wikis/Utilisation-de-Julia-à-l'N7).
 
+## Cours Julia
+
+Vous trouverez un cours sur Julia à la page [Introduction to Julia programming language](https://ocots.github.io/course-tse-julia/M1/).
+
 ## Illustration de la méthode de Newton
 
 ![Newton](newton.gif)
