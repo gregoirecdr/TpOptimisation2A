@@ -4,53 +4,54 @@ Approximation d'une solution du problème min f(x), x ∈ Rⁿ, en utilisant l'a
 
 # Syntaxe
 
-   x_sol, f_sol, flag, nb_iters, xs = newton(f, gradf, hessf, x0; kwargs...)
+   x_sol, f_sol, flag, nb_iters, xs = newton(f, ∇f, ∇²f, x0; kwargs...)
 
 # Entrées
 
    - f       : (Function) la fonction à minimiser
-   - gradf   : (Function) le gradient de la fonction f
-   - hessf   : (Function) la Hessienne de la fonction f
+   - ∇f   : (Function) le gradient de la fonction f
+   - ∇²f   : (Function) la Hessienne de la fonction f
    - x0      : (Union{Real,Vector{<:Real}}) itéré initial
    - kwargs  : les options sous formes d'arguments "keywords"
-      • max_iter : (Integer) le nombre maximal d'iterations (optionnel, par défaut 1000)
+      • max_iter : (Int) le nombre maximal d'iterations (optionnel, par défaut 1000)
       • tol_abs  : (Real) la tolérence absolue (optionnel, par défaut 1e-10)
       • tol_rel  : (Real) la tolérence relative (optionnel, par défaut 1e-8)
-      • epsilon  : (Real) le epsilon pour les tests de stagnation (optionnel, par défaut 1)
+      • δ        : (Real) pour considérer ou non les tests de stagnation (optionnel, par défaut 1)
 
 # Sorties
 
    - x_sol : (Union{Real,Vector{<:Real}}) une approximation de la solution du problème
    - f_sol : (Real) f(x_sol)
-   - flag  : (Integer) indique le critère sur lequel le programme s'est arrêté
+   - flag  : (Int) indique le critère sur lequel le programme s'est arrêté
       • 0  : convergence
       • 1  : stagnation du xk
       • 2  : stagnation du f
       • 3  : nombre maximal d'itération dépassé
-   - nb_iters : (Integer) le nombre d'itérations faites par le programme
+   - nb_iters : (Int) le nombre d'itérations faites par le programme
    - xs    : (Vector{Vector{<:Real}}) les itérés
 
 # Exemple d'appel
 
    f(x)=100*(x[2]-x[1]^2)^2+(1-x[1])^2
-   gradf(x)=[-400*x[1]*(x[2]-x[1]^2)-2*(1-x[1]) ; 200*(x[2]-x[1]^2)]
-   hessf(x)=[-400*(x[2]-3*x[1]^2)+2  -400*x[1];-400*x[1]  200]
+   ∇f(x)=[-400*x[1]*(x[2]-x[1]^2)-2*(1-x[1]) ; 200*(x[2]-x[1]^2)]
+   ∇²f(x)=[-400*(x[2]-3*x[1]^2)+2  -400*x[1];-400*x[1]  200]
    x0 = [1; 0]
-   x_sol, f_sol, flag, nb_iters, xs = newton(f, gradf, hessf, x0, max_iter=10)
+   x_sol, f_sol, flag, nb_iters, xs = newton(f, ∇f, ∇²f, x0, max_iter=10)
 
 """
-function newton(f::Function, gradf::Function, hessf::Function, x0::Union{Real,Vector{<:Real}}; 
-    max_iter::Integer = 1000, 
+function newton(f::Function, ∇f::Function, ∇²f::Function, x0::Union{Real,Vector{<:Real}}; 
+    max_iter::Int = 1000, 
     tol_abs::Real = 1e-10, 
     tol_rel::Real = 1e-8, 
-    epsilon::Real = 1)
+    δ::Real = 1)
 
     #
     x_sol = x0
     f_sol = f(x_sol)
     flag  = -1
     nb_iters = 0
-    xs = [x0] # vous pouvez faire xs = vcat(xs, [xk]) pour concaténer les valeurs
+    xs = [Float64.(x0)] # vous pouvez faire push!(xs, xk) pour créer le vecteur des itérés (xs isa Vector{Vector{Float64}})
 
     return x_sol, f_sol, flag, nb_iters, xs
+
 end

@@ -27,15 +27,16 @@ Approximation de la solution du problème
     g = [0; 0]
     H = [7 0 ; 0 2]
     Δ = 1
-    s = gct(g, H, Δ)
+    s = gct(g, H, Δ, max_iter = 10)
 
 """
 function gct(g::Vector{<:Real}, H::Matrix{<:Real}, Δ::Real; 
-    max_iter::Integer = 100, 
+    max_iter::Int = 100, 
     tol_abs::Real = 1e-10, 
     tol_rel::Real = 1e-8)
 
     s = zeros(length(g))
 
    return s
+   
 end

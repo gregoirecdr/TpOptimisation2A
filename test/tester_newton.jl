@@ -26,13 +26,13 @@ function tester_newton(newton::Function, afficher::Bool)
     max_iter = 100
     tol_abs = sqrt(eps())
     tol_rel = 1e-15
-    epsilon = 1.0
+    δ = 1.0
 
     #
     Test.@testset "algorithme de Newton" begin
         Test.@testset "test f1 : x0 = solution" begin
             x_sol, f_sol, flag, nb_iters, _ = newton(fct1, grad_fct1, hess_fct1, sol_exacte_fct1, 
-                            max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
+                            max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, δ=δ)
             if (afficher)
                 afficher_resultats("newton", "f1", sol_exacte_fct1, x_sol, f_sol, flag, nb_iters, sol_exacte_fct1)
             end
@@ -48,7 +48,7 @@ function tester_newton(newton::Function, afficher::Bool)
         end
         Test.@testset "test f1 : x0 = x011" begin
             x_sol, f_sol, flag, nb_iters, _ = newton(fct1, grad_fct1, hess_fct1, pts1.x011,  
-                            max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
+                            max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, δ=δ)
             if (afficher)
                 afficher_resultats("newton", "f1", pts1.x011, x_sol, f_sol, flag, nb_iters, sol_exacte_fct1)
             end
@@ -64,7 +64,7 @@ function tester_newton(newton::Function, afficher::Bool)
         end
         Test.@testset "test f1 : x0 = x012" begin
             x_sol, f_sol, flag, nb_iters, _ = newton(fct1, grad_fct1, hess_fct1, pts1.x012, 
-                            max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
+                            max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, δ=δ)
             if (afficher)
                 afficher_resultats("newton", "f1", pts1.x012, x_sol, f_sol, flag, nb_iters, sol_exacte_fct1)
             end
@@ -80,7 +80,7 @@ function tester_newton(newton::Function, afficher::Bool)
         end
         Test.@testset "test f2 : x0 = x021" begin
             x_sol, f_sol, flag, nb_iters, _ = newton(fct2, grad_fct2, hess_fct2, pts1.x021, 
-                            max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
+                            max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, δ=δ)
             if (afficher)
                 afficher_resultats("newton", "f2", pts1.x021, x_sol, f_sol, flag, nb_iters, sol_exacte_fct2)
             end
@@ -96,7 +96,7 @@ function tester_newton(newton::Function, afficher::Bool)
         end
         Test.@testset "test f2 : x0 = x022" begin
             x_sol, f_sol, flag, nb_iters, _ = newton(fct2, grad_fct2, hess_fct2, pts1.x022, 
-                            max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
+                            max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, δ=δ)
             if (afficher)
                 afficher_resultats("newton", "f2", pts1.x022, x_sol, f_sol, flag, nb_iters, sol_exacte_fct2)
             end
@@ -112,7 +112,7 @@ function tester_newton(newton::Function, afficher::Bool)
         end
         Test.@testset "test f2 : x0 = x023" begin
             x_sol, f_sol, flag, nb_iters, _ = newton(fct2, grad_fct2, hess_fct2, pts1.x023, 
-                            max_iter=1, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
+                            max_iter=1, tol_abs=tol_abs, tol_rel=tol_rel, δ=δ)
             if (afficher)
                 afficher_resultats("newton", "f2", pts1.x023, x_sol, f_sol, flag, nb_iters, sol_exacte_fct2)
             end
@@ -127,7 +127,7 @@ function tester_newton(newton::Function, afficher::Bool)
             end
             Test.@testset "exception" begin
                 Test.@test_throws SingularException _, _, _, _ = newton(fct2, grad_fct2, hess_fct2, pts1.x023, 
-                        max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, epsilon=epsilon)
+                        max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, δ=δ)
             end
         end
     end

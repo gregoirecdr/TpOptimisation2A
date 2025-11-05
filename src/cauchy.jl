@@ -13,7 +13,7 @@ Approximation de la solution du problème
 # Entrées
 
     - g : (Vector{<:Real}) le vecteur gₖ
-    - H : (Matrix{<:Real}) la matrice Hₖ
+    - H : (Union{Matrix{<:Real}, UniformScaling{Bool}}) la matrice Hₖ
     - Δ : (Real) le scalaire Δₖ
     - kwargs  : les options sous formes d'arguments "keywords", c'est-à-dire des arguments nommés
         • tol_abs  : la tolérence absolue (optionnel, par défaut 1e-10)
@@ -30,9 +30,10 @@ Approximation de la solution du problème
     s = cauchy(g, H, Δ)
 
 """
-function cauchy(g::Vector{<:Real}, H::Matrix{<:Real}, Δ::Real; tol_abs::Real = 1e-10)
+function cauchy(g::Vector{<:Real}, H::Union{Matrix{<:Real}, UniformScaling{Bool}}, Δ::Real; tol_abs::Real = 1e-10)
 
-    s = zeros(length(g))
+    s = zeros(eltype(g), length(g))
 
     return s
+
 end
