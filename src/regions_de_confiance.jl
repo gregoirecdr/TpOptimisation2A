@@ -11,7 +11,7 @@ du gradient conjugué tronqué.
 
 # Syntaxe
 
-    x_sol, f_sol, flag, nb_iters, xs = regions_de_confiance(f, ∇f, ∇²f, x0; kwargs...)
+    x_sol, f_sol, flag, nb_iters, xs, Δs, flags_gct = regions_de_confiance(f, ∇f, ∇²f, x0; kwargs...)
 
 # Entrées
 
@@ -21,8 +21,8 @@ du gradient conjugué tronqué.
     - x0      : (Vector{<:Real}) itéré initial
     - kwargs  : les options sous formes d'arguments "keywords"
         • max_iter      : (Int) le nombre maximal d'iterations (optionnel, par défaut 5000)
-        • tol_abs       : (Real) la tolérence absolue (optionnel, par défaut 1e-10)
-        • tol_rel       : (Real) la tolérence relative (optionnel, par défaut 1e-8)
+        • tol_abs       : (Real) la tolérance absolue, aussi transmise à cauchy et gct (optionnel, par défaut 1e-10)
+        • tol_rel       : (Real) la tolérance relative (optionnel, par défaut 1e-8)
         • δ             : (Real) pour considérer ou non les tests de stagnation (optionnel, par défaut 1)
         • Δ0            : (Real) le rayon initial de la région de confiance (optionnel, par défaut 2)
         • Δmax          : (Real) le rayon maximal de la région de confiance (optionnel, par défaut 10)
@@ -41,7 +41,15 @@ du gradient conjugué tronqué.
         • 2  : stagnation du f
         • 3  : nombre maximal d'itération dépassé
     - nb_iters : (Int) le nombre d'itérations faites par le programme
-    - xs    : (Vector{Vector{<:Real}}) les itérés
+    - xs    : (Vector{Vector{<:Real}}) les itérés (xs[1] = x0, un élément ajouté à chaque itération, même si le pas est rejeté)
+    - Δs    : (Vector{<:Real}) les rayons de la région de confiance (Δs[1] = Δ0, un élément ajouté à chaque itération :
+              Δs[k] est le rayon utilisé pour calculer le pas de l'itération k, Δs[end] le rayon final)
+    - flags_gct : (Vector{Int}) un élément par itération : le flag_gct renvoyé par gct à l'itération k
+              (0 : convergence à l'intérieur, 1 : courbure négative, 2 : sortie de la région, 3 : max_iter_gct atteint),
+              ou -1 si algo_pas = "cauchy"
+    - ρs    : (Vector{<:Real}) un élément par itération : le rapport ρk entre la décroissance réelle de f et celle du modèle
+              calculé à l'itération k (le pas est accepté si ρk ≥ η1 ; -Inf si la décroissance prédite n'est pas strictement
+              positive : le pas est alors rejeté et le rayon réduit)
 
 # Exemple d'appel
 
@@ -49,7 +57,7 @@ du gradient conjugué tronqué.
     ∇f(x)=[-400*x[1]*(x[2]-x[1]^2)-2*(1-x[1]) ; 200*(x[2]-x[1]^2)]
     ∇²f(x)=[-400*(x[2]-3*x[1]^2)+2  -400*x[1];-400*x[1]  200]
     x0 = [1; 0]
-    x_sol, f_sol, flag, nb_iters, xs = regions_de_confiance(f, ∇f, ∇²f, x0, algo_pas="gct")
+    x_sol, f_sol, flag, nb_iters, xs, Δs, flags_gct, ρs = regions_de_confiance(f, ∇f, ∇²f, x0, algo_pas="gct")
 
 """
 function regions_de_confiance(f::Function, ∇f::Function, ∇²f::Function, x0::Vector{<:Real};
@@ -63,6 +71,10 @@ function regions_de_confiance(f::Function, ∇f::Function, ∇²f::Function, x0:
     flag  = -1
     nb_iters = 0
     xs = [Float64.(x0)] # vous pouvez faire push!(xs, xk) pour créer le vecteur des itérés (xs isa Vector{Vector{Float64}})
+    Δs = [Float64(Δ0)] # vous pouvez faire push!(Δs, Δk) pour créer le vecteur des rayons (Δs isa Vector{Float64})
+    flags_gct = Int[] # vous pouvez faire push!(flags_gct, flag_gct) à chaque itération (-1 si algo_pas = "cauchy")
+    ρs = Float64[] # vous pouvez faire push!(ρs, ρk) à chaque itération (ρk : rapport décroissance réelle / décroissance prédite)
 
-    return x_sol, f_sol, flag, nb_iters, xs
+    # à compléter
+    return x_sol, f_sol, flag, nb_iters, xs, Δs, flags_gct, ρs
 end
