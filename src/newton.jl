@@ -14,8 +14,8 @@ Approximation d'une solution du problème min f(x), x ∈ Rⁿ, en utilisant l'a
    - x0      : (Union{Real,Vector{<:Real}}) itéré initial
    - kwargs  : les options sous formes d'arguments "keywords"
       • max_iter : (Int) le nombre maximal d'iterations (optionnel, par défaut 1000)
-      • tol_abs  : (Real) la tolérence absolue (optionnel, par défaut 1e-10)
-      • tol_rel  : (Real) la tolérence relative (optionnel, par défaut 1e-8)
+      • tol_abs  : (Real) la tolérance absolue (optionnel, par défaut 1e-10)
+      • tol_rel  : (Real) la tolérance relative (optionnel, par défaut 1e-8)
       • δ        : (Real) pour considérer ou non les tests de stagnation (optionnel, par défaut 1)
 
 # Sorties
@@ -28,7 +28,8 @@ Approximation d'une solution du problème min f(x), x ∈ Rⁿ, en utilisant l'a
       • 2  : stagnation du f
       • 3  : nombre maximal d'itération dépassé
    - nb_iters : (Int) le nombre d'itérations faites par le programme
-   - xs    : (Vector{Vector{<:Real}}) les itérés
+   - xs    : (Vector{<:Union{Real,Vector{<:Real}}}) les itérés (xs[1] = x0 ; un Vector{Vector{Float64}} si x0 est un vecteur,
+             un Vector{Float64} si x0 est un réel)
 
 # Exemple d'appel
 
@@ -52,6 +53,7 @@ function newton(f::Function, ∇f::Function, ∇²f::Function, x0::Union{Real,Ve
     nb_iters = 0
     xs = [Float64.(x0)] # vous pouvez faire push!(xs, xk) pour créer le vecteur des itérés (xs isa Vector{Vector{Float64}})
 
+    # à compléter
     return x_sol, f_sol, flag, nb_iters, xs
 
 end

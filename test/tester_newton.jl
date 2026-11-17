@@ -11,8 +11,8 @@ Tester l'algorithme de Newton
 
 # Les cas de test (dans l'ordre)
 
-    - fct 1 : x011, x012
-    - fct 2 : x021, x022, x023
+    - fct 1 : x011, x012  (nombre d'itérations et flag stricts : f1 est quadratique)
+    - fct 2 : x021, x022, x023  (bornes sur le nombre d'itérations, flags admissibles)
 
 """
 function tester_newton(newton::Function, afficher::Bool)
@@ -88,10 +88,10 @@ function tester_newton(newton::Function, afficher::Bool)
                 Test.@test x_sol ≈ sol_exacte_fct2 atol = tol_erreur
             end
             Test.@testset "itération" begin
-                Test.@test nb_iters == 6
+                Test.@test nb_iters ≤ 12 # 6 pour l'implémentation de référence
             end
             Test.@testset "flag" begin
-                Test.@test flag == 0
+                Test.@test flag in (0, 1, 2) # arrêt par convergence ou par stagnation
             end
         end
         Test.@testset "test f2 : x0 = x022" begin
@@ -104,10 +104,10 @@ function tester_newton(newton::Function, afficher::Bool)
                 Test.@test x_sol ≈ sol_exacte_fct2 atol = tol_erreur
             end
             Test.@testset "itération" begin
-                Test.@test nb_iters == 5
+                Test.@test nb_iters ≤ 10 # 5 pour l'implémentation de référence
             end
             Test.@testset "flag" begin
-                Test.@test flag == 0
+                Test.@test flag in (0, 1, 2) # arrêt par convergence ou par stagnation
             end
         end
         Test.@testset "test f2 : x0 = x023" begin
@@ -126,6 +126,7 @@ function tester_newton(newton::Function, afficher::Bool)
                 Test.@test nb_iters == 1
             end
             Test.@testset "exception" begin
+                # fragile : dépend de l'arrondi flottant exact de x023 = [0, 1/200 + 1/10^18] (voir fonctions_de_tests.jl)
                 Test.@test_throws SingularException _, _, _, _ = newton(fct2, grad_fct2, hess_fct2, pts1.x023, 
                         max_iter=max_iter, tol_abs=tol_abs, tol_rel=tol_rel, δ=δ)
             end

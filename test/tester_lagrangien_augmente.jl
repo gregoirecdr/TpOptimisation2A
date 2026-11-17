@@ -1,4 +1,5 @@
 using Test
+using LinearAlgebra
 include("../test/fonctions_de_tests.jl")
 
 """
@@ -48,35 +49,47 @@ function tester_lagrangien_augmente(LA::Function, afficher::Bool)
 
 			# le cas de test 1
 			x0 = x01
-			x_sol, f_sol, flag, nb_iters, _ = LA(f1, gf1, Hf1, c1, gc1, Hc1, x0, tol_abs=tol, tol_rel=tol, algo_noc=algo)
+			x_sol, f_sol, flag, nb_iters, _, _, λs = LA(f1, gf1, Hf1, c1, gc1, Hc1, x0, tol_abs=tol, tol_rel=tol, algo_noc=algo)
 			if (afficher)
 				afficher_resultats("LA et " * algo, "f1", x0, x_sol, f_sol, flag, nb_iters, sol_fct1_augm)
 			end
 			Test.@test x_sol ≈ sol_fct1_augm atol=tol_erreur
+			# (x_sol, λ_sol) vérifie la CN1 du lagrangien et la contrainte, avec le λ mis à jour
+			Test.@test norm(gf1(x_sol) + λs[end]*gc1(x_sol)) ≤ tol_erreur
+			Test.@test abs(c1(x_sol)) ≤ tol_erreur
 
 			# le cas de test 2
 			x0 = x02
-			x_sol, f_sol, flag, nb_iters, _ = LA(f1, gf1, Hf1, c1, gc1, Hc1, x0, tol_abs=tol, tol_rel=tol, algo_noc=algo)
+			x_sol, f_sol, flag, nb_iters, _, _, λs = LA(f1, gf1, Hf1, c1, gc1, Hc1, x0, tol_abs=tol, tol_rel=tol, algo_noc=algo)
 			if (afficher)
 				afficher_resultats("LA et " * algo, "f1", x0, x_sol, f_sol, flag, nb_iters, sol_fct1_augm)
 			end
 			Test.@test x_sol ≈ sol_fct1_augm atol=tol_erreur
+			# (x_sol, λ_sol) vérifie la CN1 du lagrangien et la contrainte, avec le λ mis à jour
+			Test.@test norm(gf1(x_sol) + λs[end]*gc1(x_sol)) ≤ tol_erreur
+			Test.@test abs(c1(x_sol)) ≤ tol_erreur
 
 			# le cas de test 3
 			x0 = x03
-			x_sol, f_sol, flag, nb_iters, _ = LA(f2, gf2, Hf2, c2, gc2, Hc2, x0, tol_abs=tol, tol_rel=tol, algo_noc=algo)
+			x_sol, f_sol, flag, nb_iters, _, _, λs = LA(f2, gf2, Hf2, c2, gc2, Hc2, x0, tol_abs=tol, tol_rel=tol, algo_noc=algo)
 			if (afficher)
 				afficher_resultats("LA et " * algo, "f2", x0, x_sol, f_sol, flag, nb_iters, sol_fct2_augm)
 			end
 			Test.@test x_sol ≈ sol_fct2_augm atol=tol_erreur
+			# (x_sol, λ_sol) vérifie la CN1 du lagrangien et la contrainte, avec le λ mis à jour
+			Test.@test norm(gf2(x_sol) + λs[end]*gc2(x_sol)) ≤ tol_erreur
+			Test.@test abs(c2(x_sol)) ≤ tol_erreur
 
 			# le cas de test 4
 			x0 = x04
-			x_sol, f_sol, flag, nb_iters, _ = LA(f2, gf2, Hf2, c2, gc2, Hc2, x0, tol_abs=tol, tol_rel=tol, algo_noc=algo)
+			x_sol, f_sol, flag, nb_iters, _, _, λs = LA(f2, gf2, Hf2, c2, gc2, Hc2, x0, tol_abs=tol, tol_rel=tol, algo_noc=algo)
 			if (afficher)
 				afficher_resultats("LA et " * algo, "f2", x0, x_sol, f_sol, flag, nb_iters, sol_fct2_augm)
 			end
 			Test.@test x_sol ≈ sol_fct2_augm atol=tol_erreur
+			# (x_sol, λ_sol) vérifie la CN1 du lagrangien et la contrainte, avec le λ mis à jour
+			Test.@test norm(gf2(x_sol) + λs[end]*gc2(x_sol)) ≤ tol_erreur
+			Test.@test abs(c2(x_sol)) ≤ tol_erreur
 
 		end
 

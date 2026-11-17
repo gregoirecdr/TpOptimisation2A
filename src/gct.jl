@@ -6,7 +6,7 @@ Approximation de la solution du problème
 
 # Syntaxe
 
-    s = gct(g, H, Δ; kwargs...)
+    s, flag_gct = gct(g, H, Δ; kwargs...)
 
 # Entrées
 
@@ -15,19 +15,24 @@ Approximation de la solution du problème
     - Δ : (Real) le scalaire Δₖ
     - kwargs  : les options sous formes d'arguments "keywords", c'est-à-dire des arguments nommés
         • max_iter : le nombre maximal d'iterations (optionnel, par défaut 100)
-        • tol_abs  : la tolérence absolue (optionnel, par défaut 1e-10)
-        • tol_rel  : la tolérence relative (optionnel, par défaut 1e-8)
+        • tol_abs  : la tolérance absolue (optionnel, par défaut 1e-10)
+        • tol_rel  : la tolérance relative (optionnel, par défaut 1e-8)
 
 # Sorties
 
     - s : (Vector{<:Real}) une approximation de la solution du problème
+    - flag_gct : (Int) indique la façon dont l'algorithme s'est arrêté
+        • 0 : convergence à l'intérieur de la région de confiance (‖g_j‖ assez petit, y compris g = 0)
+        • 1 : courbure négative (κ_j ≤ 0), le pas est sur le bord de la région de confiance
+        • 2 : sortie de la région de confiance, le pas est sur le bord de la région de confiance
+        • 3 : nombre maximal d'itérations atteint
 
 # Exemple d'appel
 
     g = [0; 0]
     H = [7 0 ; 0 2]
     Δ = 1
-    s = gct(g, H, Δ, max_iter = 10)
+    s, flag_gct = gct(g, H, Δ, max_iter = 10)
 
 """
 function gct(g::Vector{<:Real}, H::Matrix{<:Real}, Δ::Real; 
@@ -36,7 +41,9 @@ function gct(g::Vector{<:Real}, H::Matrix{<:Real}, Δ::Real;
     tol_rel::Real = 1e-8)
 
     s = zeros(length(g))
+    flag_gct = -1
 
-   return s
+    # à compléter
+   return s, flag_gct
    
 end
