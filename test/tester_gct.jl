@@ -1,7 +1,7 @@
 using Test
 
 """
-Tester l'algorithme du gient conjugué tronqué
+Tester l'algorithme du gradient conjugué tronqué
 
 # Les cas de test (dans l'ordre)
 
@@ -11,6 +11,7 @@ Tester l'algorithme du gient conjugué tronqué
     - la quadratique 4
     - la quadratique 5
     - la quadratique 6
+    - le nombre maximal d'itérations (max_iter = 0 et max_iter = 1)
     
 """
 function tester_gct(gct::Function)
@@ -23,42 +24,50 @@ function tester_gct(gct::Function)
         g = [0 ; 0]
         H = [7 0 ; 0 2]
         Δ = 1
-        s = gct(g,H,Δ)
+        s, flag_gct = gct(g,H,Δ)
+        Test.@test  flag_gct == 0
         Test.@test  s ≈ [0.0 ; 0.0] atol = tol_test
 
         # le cas de test 2 H definie positive
         g = [6 ; 2]
         H = [7 0 ; 0 2]
         Δ = 0.5       # sol = pas de Cauchy  
-        s = gct(g,H,Δ)
+        s, flag_gct = gct(g,H,Δ)
+        Test.@test  flag_gct == 2
         Test.@test  s ≈ -Δ*g/norm(g) atol = tol_test
         Δ = 1.2       # saturation à la 2ieme itération  
-        s = gct(g,H,Δ)
+        s, flag_gct = gct(g,H,Δ)
+        Test.@test  flag_gct == 2
         Test.@test  s ≈ [-0.8740776099190263, -0.8221850958502244] atol = tol_test
         Δ = 3         # sol = min global  
-        s = gct(g,H,Δ)
+        s, flag_gct = gct(g,H,Δ)
+        Test.@test  flag_gct == 0
         Test.@test  s ≈ -H\g atol = tol_test
 
         # le cas test 2 bis matrice avec 1 vp < 0 et 1 vp > 0
         g = [1,2]
         H = [1 0 ; 0 -1]
         Δ = 1.       # g^T H g < 0 première direction concave
-        s = gct(g,H,Δ)
+        s, flag_gct = gct(g,H,Δ)
+        Test.@test  flag_gct == 1
         Test.@test  s ≈ -Δ*g/norm(g) atol = tol_test
         g = [1,0]
         Δ = 0.5       #  g^T H g > 0 sol pas de Cauchy
-        s = gct(g,H,Δ)
+        s, flag_gct = gct(g,H,Δ)
+        Test.@test  flag_gct == 2
         Test.@test  s ≈ -Δ*g/norm(g) atol = tol_test
         g = [2,1]        #  g^T H g > 0 sol à l'itération 2, saturation
         Δ = 6
-        s = gct(g,H,Δ)
+        s, flag_gct = gct(g,H,Δ)
+        Test.@test  flag_gct == 1
         Test.@test  isapprox(s, [0.48997991959774634, 5.979959839195494], atol = tol_test) || isapprox(s, [-4.489979919597747, -3.979959839195493], atol = tol_test)
 
         # le cas de test 5
         g = [2 ; 3]
         H = [4 6 ; 6 5]
         Δ = 3
-        s = gct(g,H,Δ)
+        s, flag_gct = gct(g,H,Δ)
+        Test.@test  flag_gct == 1
         Test.@test  s ≈ [1.9059020876695578 ; -2.3167946029410595] atol = tol_test
 
         # le cas de test 6
@@ -66,7 +75,19 @@ function tester_gct(gct::Function)
         g = [2 ; 0]
         H = [4 0 ; 0 -15]
         Δ = 2
-        s = gct(g,H,Δ)
+        s, flag_gct = gct(g,H,Δ)
+        Test.@test  flag_gct == 0
         Test.@test  s ≈ [-0.5 ; 0.0] atol = tol_test
+
+        # le cas de test 7 : nombre maximal d'itérations
+        g = [6 ; 2]
+        H = [7 0 ; 0 2]
+        Δ = 3
+        s, flag_gct = gct(g,H,Δ,max_iter=0)  # aucune itération : le pas est nul
+        Test.@test  flag_gct == 3
+        Test.@test  s ≈ [0.0 ; 0.0] atol = tol_test
+        s, flag_gct = gct(g,H,Δ,max_iter=1)  # une itération : le pas de Cauchy non saturé -(g'g/g'Hg) g
+        Test.@test  flag_gct == 3
+        Test.@test  s ≈ -(g'*g/(g'*H*g))*g atol = tol_test
     end
 end

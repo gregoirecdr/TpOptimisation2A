@@ -16,7 +16,7 @@ Approximation de la solution du problème
     - H : (Union{Matrix{<:Real}, UniformScaling{Bool}}) la matrice Hₖ
     - Δ : (Real) le scalaire Δₖ
     - kwargs  : les options sous formes d'arguments "keywords", c'est-à-dire des arguments nommés
-        • tol_abs  : la tolérence absolue (optionnel, par défaut 1e-10)
+        • tol_abs  : la tolérance absolue : le pas est nul si ‖g‖ ≤ tol_abs (optionnel, par défaut 1e-10)
 
 # Sorties
 
@@ -34,6 +34,7 @@ function cauchy(g::Vector{<:Real}, H::Union{Matrix{<:Real}, UniformScaling{Bool}
 
     s = zeros(eltype(g), length(g))
 
+    # à compléter
     return s
 
 end
